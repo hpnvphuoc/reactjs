@@ -1,61 +1,39 @@
 import React, { Component } from 'react'
+import {connect} from 'react-redux'
+import Word from './Word';
+import Form from './Form';
+import Filter from './Filter';
 
-export default class List extends Component {
-    constructor(props){
-        super(props);
-        this.state={
-            word:[
-                {id:"a1",en:"one",vn:"Mot",isMemorized:true},
-                {id:"a2",en:"two",vn:"Hai",isMemorized:false},
-                {id:"a3",en:"three",vn:"Ba",isMemorized:true}
-            ]
-        }
-    }
-    toggleWord(id){
-        const newWord=this.state.word.map(w=>{
-            if(id===w.id){
-                return {...w, isMemorized:!w.isMemorized}
-            }else {
-                return w;
-            }
-        } )
-        this.setState({word:newWord});
-    }
+ class List extends Component {
     render() {
         return (
-            <div>
-                {
-                    this.state.word.map(word=><div className="word">
-                    <div className="word-container">
-                    <h3 className="text-success">{word.en}</h3>
-                    <h3 className="text-danger">
-                        {word.isMemorized ? '----' : word.vn}
-                    </h3>
-                    </div>
-                    <div className="btn-container">
-                    <button
-                    //neu w.id !==word.id ma khong lam gi ca thi tao ra mot object moi co thuoc tinh word la mang co 1
-                    //phan tu phuong thuc render chay lai thi tai sao lai khong truy cap duoc vao thuoc tinh word.en
+           <div>
+                <Form/>
+                <Filter/>
+                {this.props.words.filter(word=>{
+                    if(this.props.filtermode==="Show_Forgot"&& word.isMemorized===true) return true;
+                    if(this.props.filtermode==="Show_Memorized"&& word.isMemorized===false) return true;
+                    if(this.props.filtermode==="Show_All") return true;
+                    return false;
 
-                    //giai thich tai vi khi phuong thuc khong tra ve gia ca thi mac dinh tra ve undefined
-                    //nen khi truy cap vao thuoc tinh en cua undefine thi se bi loi
-
-
-                        className={word.isMemorized ? 'btn btn-success' : 'btn btn-danger'}
-                        onClick={()=>this.toggleWord(word.id)}
-
-                        //tại sao onClick ={this.toggleWord(word.id)} không được mà  onClick={()=>this.toggleWord(word.id)}
-                        >
-                        {word.isMemorized ? 'Forgot' : 'Memorized'}
-                    </button>
-                    <button 
-                        className="btn btn-warning" >
-                        Remove
-                    </button>
-                    </div>
-                    </div>)
-                }
-            </div>
+                }).map(word=><Word word={word} key={word.id}/>)}
+                
+           </div>
         )
+      }
     }
-}
+    const mapStatetoProps=function(state){
+      return {words:state.words, filtermode:state.filtermode}
+    }
+    export default connect(mapStatetoProps)(List)
+ 
+    // function getWordItem co return ok đúng
+    // nhưng
+
+    // khi mà viết ()=>{ this.getWordItem(word)} thì nó hiểu là function không nhận vào gì cả thực thi phương thức this.getWordItem
+    // khi mà viết ()=> this.getWordItem(word) thì cũng y vậy chứ gì anh tại vì nó chỉ có 1 câu lệnh nên mình bỏ dấu ngoặc {} được
+    // với lại trong phương thức getWordItem em có return rồi thì {return } nữa thì nó return 2 lần hả anh
+
+    // {this.getWordItem(word)} => function chứa this.getWordItem(word) không có return nên tra về undefined
+    // ()=> this.getWordItem(word) =>  () == this.getWordItem(word) this.getWordItem(word) return gi` thì () tương tự
+    // ở trên đó em có return ve roi ma 
