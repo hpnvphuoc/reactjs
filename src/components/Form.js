@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
+import { toggleForm } from './redux/actioncreators';
 
 class Form extends Component {
     constructor(props){
@@ -8,12 +9,6 @@ class Form extends Component {
             txtEn:"",
             txtVn:""
         }
-    }
-    toggleForm(){
-        this.props.dispatch({type:"TOGGLE_FORM"})
-    }
-    addWord(){
-        this.props.dispatch({type:"ADD_WORD",en:this.state.txtEn,vn:this.state.txtVn})
     }
     render() {
         return (
@@ -56,7 +51,7 @@ class Form extends Component {
                       </button>
                       <button
                           className="btn btn-danger"
-                          onClick={()=>this.toggleForm()} 
+                          onClick={()=>this.props.toggleForm()} 
                           >
                           Cancel
                       </button>
@@ -70,4 +65,4 @@ class Form extends Component {
 const mapStatetoProps=function (state){
     return {shouldShowForm:state.shouldShowForm}
 }
-export default connect(mapStatetoProps)(Form);
+export default connect(null,toggleForm)(Form);

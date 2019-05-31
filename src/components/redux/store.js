@@ -1,8 +1,13 @@
-import {combineReducer, createStore} from "redux"
+import {combineReducers, createStore} from "redux"
 import { wordReducer } from "./reducer/wordreducer";
+import { shouldShowFormReducer } from "./reducer/shouldShowFormReducer";
+import { filterModeReducer } from "./reducer/filterModeReducer";
 
-const reducer=combineReducer({
-    words:wordReducer
+const reducer=combineReducers({
+    words:wordReducer,
+    shouldShowForm:shouldShowFormReducer,
+    filetermode:filterModeReducer
+
 })
 const store=createStore(reducer);
 
