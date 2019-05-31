@@ -1,13 +1,7 @@
 import React , {Component} from 'react';
 import {connect} from 'react-redux'
-
+import * as actioncreators from './redux/actioncreators';
 class Word extends Component{
-    toggleWord(id){
-        this.props.dispatch({type:"TOGGLE_WORD",id:id})
-    }
-    removeword(id){
-        this.props.dispatch({type:"REMOVE_WORD",id:id})
-    }
     render(){
         const word=this.props.word;
         return(
@@ -28,7 +22,7 @@ class Word extends Component{
     
     
                 className={word.isMemorized ? 'btn btn-success' : 'btn btn-danger'}
-                onClick={()=>this.toggleWord(word.id)}
+                onClick={()=>this.props.toggleWord(word.id)}
     
                 //tại sao onClick ={this.toggleWord(word.id)} không được mà  onClick={()=>this.toggleWord(word.id)}
                 >
@@ -36,7 +30,7 @@ class Word extends Component{
             </button>
             <button 
                 className="btn btn-warning"
-                onClick={()=>{this.removeword(word.id)} }
+                onClick={()=>{this.props.removeword(word.id)} }
                 >
                 Remove
             </button>
@@ -46,7 +40,4 @@ class Word extends Component{
         }
     }
 
-    const mapStatetoProps=function(state){
-        return {words:state.words}
-    }
-    export default connect(mapStatetoProps)(Word);
+    export default connect(null,actioncreators)(Word);

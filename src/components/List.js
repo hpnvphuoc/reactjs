@@ -8,7 +8,7 @@ import Filter from './Filter';
     render() {
         return (
            <div>
-                <Form/>
+                {/* <Form/>
                 <Filter/>
                 {this.props.words.filter(word=>{
                     if(this.props.filtermode==="Show_Forgot"&& word.isMemorized===true) return true;
@@ -16,16 +16,12 @@ import Filter from './Filter';
                     if(this.props.filtermode==="Show_All") return true;
                     return false;
 
-                }).map(word=><Word word={word} key={word.id}/>)}
-                
+                }).map(word=><Word word={word} key={word.id}/>)} */}
            </div>
         )
       }
     }
-    const mapStatetoProps=function(state){
-      return {words:state.words, filtermode:state.filtermode}
-    }
-    export default connect(mapStatetoProps)(List)
+    export default connect(null,)(List)
  
     // function getWordItem co return ok đúng
     // nhưng
